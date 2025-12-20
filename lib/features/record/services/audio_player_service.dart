@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +9,13 @@ class AudioPlayerService {
   SoundHandle? _currentHandle;
   AudioSource? _currentStream;
   bool _isInitialized = false;
+  bool _isPlaying = false;
+
+  bool get isPlaying => _isPlaying;
 
   Future<void> init() async {
     if (!SoLoud.instance.isInitialized) {
-      await SoLoud.instance.init(sampleRate: 44100, channels: Channels.mono);
+      await SoLoud.instance.init(sampleRate: 24000, channels: Channels.stereo);
     }
     _isInitialized = true;
   }
@@ -37,7 +39,7 @@ class AudioPlayerService {
       final bytes = await file.readAsBytes();
 
       // Create a buffer stream for SoLoud
-      _currentStream = await SoLoud.instance.setBufferStream(
+      _currentStream = SoLoud.instance.setBufferStream(
         bufferingType: BufferingType.released,
         bufferingTimeNeeds: 0,
         format: BufferType.s16le,
@@ -45,6 +47,7 @@ class AudioPlayerService {
 
       // Play the stream
       _currentHandle = await SoLoud.instance.play(_currentStream!);
+      _isPlaying = true;
 
       // Add audio data to the stream
       SoLoud.instance.addAudioDataStream(_currentStream!, bytes);
@@ -52,14 +55,14 @@ class AudioPlayerService {
       // Mark stream as ended
       SoLoud.instance.setDataIsEnded(_currentStream!);
 
-      // Also use playerController for waveform visualization
+      // ONLY use playerController for waveform visualization, NOT for audio playback
       try {
         await playerController.preparePlayer(path: path, noOfSamples: 100);
-        await playerController.startPlayer();
       } catch (waveformError) {
         debugPrint('Waveform visualization not available: $waveformError');
       }
     } catch (e) {
+      _isPlaying = false;
       debugPrint('Error playing audio: $e');
       rethrow;
     }
@@ -68,11 +71,7 @@ class AudioPlayerService {
   Future<void> pause() async {
     if (_currentHandle != null) {
       SoLoud.instance.pauseSwitch(_currentHandle!);
-    }
-    try {
-      await playerController.pausePlayer();
-    } catch (e) {
-      debugPrint('PlayerController pause error: $e');
+      _isPlaying = !_isPlaying; // Toggle playing state
     }
   }
 
@@ -85,6 +84,8 @@ class AudioPlayerService {
       await SoLoud.instance.disposeSource(_currentStream!);
       _currentStream = null;
     }
+    _isPlaying = false;
+
     try {
       await playerController.stopPlayer();
     } catch (e) {

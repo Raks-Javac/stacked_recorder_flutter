@@ -23,8 +23,8 @@ class AudioRecorderService {
         encoder: AudioEncoder.pcm16bits,
         numChannels: 1,
         noiseSuppress: true,
-        echoCancel: true, // Disable noise suppression to avoid artifacts
-        sampleRate: 16000, // Standard CD quality sample rate
+        echoCancel: true, // Disable to avoid tiny voice echo
+        sampleRate: 24000, // Lower sample rate for smaller files
       ),
       path: _path!,
     );

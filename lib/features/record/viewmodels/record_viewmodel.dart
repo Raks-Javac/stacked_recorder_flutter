@@ -70,17 +70,24 @@ class RecordViewModel extends BaseViewModel {
         _isPlaying = true;
         notifyListeners();
 
-        // Listen for when playback finishes
-        _playerService.playerController.onCompletion.listen((_) {
-          _isPlaying = false;
-          notifyListeners();
-        });
+        // Don't use onCompletion listener - it causes crashes
+        // User can manually stop playback
       } catch (e) {
+        _isPlaying = false;
+        notifyListeners();
         _bottomSheetService.showBottomSheet(
           title: 'Playback Error',
           description: 'Could not play the recording: ${e.toString()}',
         );
       }
+    }
+  }
+
+  Future<void> stopPlayback() async {
+    if (_isPlaying) {
+      await _playerService.stop();
+      _isPlaying = false;
+      notifyListeners();
     }
   }
 
