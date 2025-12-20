@@ -43,7 +43,5 @@ class AudioEffectsService {
     if (_currentPitch != normalPitch) {
       SoLoud.instance.setRelativePlaySpeed(handle, _currentPitch);
     }
-    // Note: SoLoud doesn't have separate speed control,
-    // so we use play speed for both pitch and speed effects
   }
 }

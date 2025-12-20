@@ -21,10 +21,10 @@ class AudioRecorderService {
     await _recorder.start(
       const RecordConfig(
         encoder: AudioEncoder.pcm16bits,
+        numChannels: 1,
         noiseSuppress: true,
-        sampleRate: 120000,
-        streamBufferSize: 1024,
-        echoCancel: true,
+        echoCancel: true, // Disable noise suppression to avoid artifacts
+        sampleRate: 16000, // Standard CD quality sample rate
       ),
       path: _path!,
     );

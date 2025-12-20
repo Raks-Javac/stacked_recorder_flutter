@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +7,13 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 
 class AudioPlayerService {
   final PlayerController playerController = PlayerController();
-  AudioSource? _currentSource;
   SoundHandle? _currentHandle;
+  AudioSource? _currentStream;
   bool _isInitialized = false;
 
   Future<void> init() async {
     if (!SoLoud.instance.isInitialized) {
-      await SoLoud.instance.init();
+      await SoLoud.instance.init(sampleRate: 44100, channels: Channels.mono);
     }
     _isInitialized = true;
   }
@@ -25,24 +26,38 @@ class AudioPlayerService {
 
     await init();
 
-    // Stop any existing playback completely
+    // Stop any existing playback
     await stop();
 
     try {
       debugPrint('Playing audio at path: $path');
 
-      // Load and play with SoLoud
-      _currentSource = await SoLoud.instance.loadFile(path);
-      _currentHandle = await SoLoud.instance.play(_currentSource!);
+      // Read the audio file
+      final file = File(path);
+      final bytes = await file.readAsBytes();
 
-      // Try to prepare playerController for waveform visualization
-      // This might fail for WAV files, so we catch errors
+      // Create a buffer stream for SoLoud
+      _currentStream = await SoLoud.instance.setBufferStream(
+        bufferingType: BufferingType.released,
+        bufferingTimeNeeds: 0,
+        format: BufferType.s16le,
+      );
+
+      // Play the stream
+      _currentHandle = await SoLoud.instance.play(_currentStream!);
+
+      // Add audio data to the stream
+      SoLoud.instance.addAudioDataStream(_currentStream!, bytes);
+
+      // Mark stream as ended
+      SoLoud.instance.setDataIsEnded(_currentStream!);
+
+      // Also use playerController for waveform visualization
       try {
         await playerController.preparePlayer(path: path, noOfSamples: 100);
         await playerController.startPlayer();
       } catch (waveformError) {
         debugPrint('Waveform visualization not available: $waveformError');
-        // Continue without waveform - audio will still play via SoLoud
       }
     } catch (e) {
       debugPrint('Error playing audio: $e');
@@ -63,12 +78,12 @@ class AudioPlayerService {
 
   Future<void> stop() async {
     if (_currentHandle != null) {
-      SoLoud.instance.stop(_currentHandle!);
+      await SoLoud.instance.stop(_currentHandle!);
       _currentHandle = null;
     }
-    if (_currentSource != null) {
-      await SoLoud.instance.disposeSource(_currentSource!);
-      _currentSource = null;
+    if (_currentStream != null) {
+      await SoLoud.instance.disposeSource(_currentStream!);
+      _currentStream = null;
     }
     try {
       await playerController.stopPlayer();
@@ -81,8 +96,8 @@ class AudioPlayerService {
     if (_currentHandle != null) {
       SoLoud.instance.stop(_currentHandle!);
     }
-    if (_currentSource != null) {
-      SoLoud.instance.disposeSource(_currentSource!);
+    if (_currentStream != null) {
+      SoLoud.instance.disposeSource(_currentStream!);
     }
     if (_isInitialized) {
       SoLoud.instance.deinit();

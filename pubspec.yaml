@@ -48,7 +48,7 @@ dependencies:
   permission_handler: ^11.0.1
   path_provider: ^2.1.1
   record: ^6.1.2
-  flutter_soloud: ^2.0.0
+  flutter_soloud: ^3.4.7
 
   # Editing & Export
   share_plus: ^7.2.1

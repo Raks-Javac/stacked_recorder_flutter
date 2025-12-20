@@ -93,7 +93,7 @@ SPEC CHECKSUMS:
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
   file_picker: 07c75322ede1d47ec9bb4ac82b27c94d3598251a
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_soloud: ceb463dfdba562ed9e3798855eca9a4ecc72d23c
+  flutter_soloud: 272cc604453b6ca135f274045fb259e7c6426122
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   record_ios: f75fa1d57f840012775c0e93a38a7f3ceea1a374
