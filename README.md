@@ -56,23 +56,23 @@ A beautiful Flutter audio recording and editing app built with clean architectur
 
 ### Recording Screen
 
-<img src="screenshots/recording_screen.png" width="300" alt="Recording Screen"/>
+<img src="screenshots/screen_shot_1.png" width="300" alt="Recording Screen"/>
 
 ### Audio Editor
 
-<img src="screenshots/editor_screen.png" width="300" alt="Audio Editor"/>
+<img src="screenshots/screen_shot_2.png" width="300" alt="Audio Editor"/>
 
 ### Effects Panel
 
-<img src="screenshots/effects_panel.png" width="300" alt="Effects Panel"/>
+<img src="screenshots/screen_shot_3.png" width="300" alt="Effects Panel"/>
 
 </div>
 
 ## 🎬 Demo Video
 
-<div align="center">
-  <img src="screenshots/demo.gif" width="300" alt="App Demo"/>
-</div>
+[View Demo Video](screenshots/screen_rec_1.mov)
+
+> **Note**: Click the link above to download and view the demo video, or convert to GIF for inline display.
 
 ## 🏗️ Architecture
 
