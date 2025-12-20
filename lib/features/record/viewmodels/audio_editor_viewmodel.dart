@@ -54,6 +54,11 @@ class AudioEditorViewModel extends BaseViewModel {
   }
 
   void applyEffect(String effectName) {
+    // Pause playback if playing
+    if (_isPlaying) {
+      pause();
+    }
+
     _selectedEffect = effectName;
 
     switch (effectName) {
@@ -69,6 +74,14 @@ class AudioEditorViewModel extends BaseViewModel {
     }
 
     notifyListeners();
+  }
+
+  Future<void> pause() async {
+    if (_isPlaying) {
+      await _playerService.pause();
+      _isPlaying = false;
+      notifyListeners();
+    }
   }
 
   Future<void> exportAudio() async {
