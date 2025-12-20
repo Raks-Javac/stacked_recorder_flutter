@@ -69,6 +69,8 @@ class RecordViewModel extends BaseViewModel {
     }
   }
 
+
+
   @override
   void dispose() {
     _recorderService.dispose();
