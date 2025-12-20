@@ -129,6 +129,31 @@ class RecordView extends StackedView<RecordViewModel> {
                     ],
                   ),
                 ),
+
+                const SizedBox(height: 20),
+
+                // Proceed to Edit Button (only show if recording exists and not currently recording/playing)
+                if (viewModel.recordedFilePath != null &&
+                    !viewModel.isRecording &&
+                    !viewModel.isPlaying)
+                  ElevatedButton.icon(
+                    onPressed: viewModel.navigateToEditor,
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Proceed to Edit'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purpleAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 5,
+                      shadowColor: Colors.purpleAccent.withOpacity(0.5),
+                    ),
+                  ),
               ],
             ),
           ),

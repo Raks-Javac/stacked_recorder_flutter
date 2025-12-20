@@ -11,6 +11,8 @@ import 'package:stacked_services/src/dialog/dialog_service.dart';
 import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
+import '../features/record/services/audio_effects_service.dart';
+import '../features/record/services/audio_export_service.dart';
 import '../features/record/services/audio_player_service.dart';
 import '../features/record/services/audio_recorder_service.dart';
 
@@ -30,4 +32,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AudioRecorderService());
   locator.registerLazySingleton(() => AudioPlayerService());
+  locator.registerLazySingleton(() => AudioEffectsService());
+  locator.registerLazySingleton(() => AudioExportService());
 }
