@@ -6,9 +6,9 @@ import FlutterMacOS
 import Foundation
 
 import path_provider_foundation
-import record_macos
+import record_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
-  RecordMacOsPlugin.register(with: registry.registrar(forPlugin: "RecordMacOsPlugin"))
+  RecordPlugin.register(with: registry.registrar(forPlugin: "RecordPlugin"))
 }

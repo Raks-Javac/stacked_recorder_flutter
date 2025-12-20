@@ -1,73 +1,59 @@
-# Stacked Audio Recorder 🎙️✨
+# stacked_recorder_flutter
 
-A beautiful, cute, and functional audio recorder built with Flutter using the **Stacked** architecture.
+A Flutter application demonstrating a clean implementation of audio recording and playback using Stacked Architecture. This project leverages `record` for lightweight audio capturing and `flutter_soloud` for high-performance audio management.
 
-## Features 🌟
+## 🚀 Overview
 
-- **Cute UI**: A soft "Audio Garden" aesthetic with pastel gradients and rounded typography.
-- **Waveform Visualization**: Real-time waveforms for both recording and playback.
-- **Stacked Architecture**: Clean MVVM structure (Views, Viewmodels, Services).
-- **Smooth Animations**: Interactive buttons with hover and pulse effects.
-- **Feature-Based Structure**: Scalable organization under `lib/features/record/`.
+The goal of this repository is to provide a boilerplate or reference for developers looking to handle audio in Flutter without the "spaghetti code" often associated with hardware controllers. By using the Stacked (MVVM) approach, we ensure that the audio state is decoupled from the View.
 
-## Preview 📸
+## 🛠 Tech Stack
 
-> [!NOTE]
-> Screenshots coming soon!
+- **State Management**: Stacked (MVVM pattern)
+- **Audio Playback**: `flutter_soloud` (C++ backed, low latency)
+- **Audio Recording**: `record` (Lightweight and feature-rich)
+- **Dependency Injection**: `get_it` and `stacked_services`
 
-## Getting Started 🚀
+## 📁 Architecture Structure
+
+The project follows the standard Stacked directory structure to maintain a clear separation of concerns:
+
+- **Services**: Wrappers around `flutter_soloud` and `record`. This is where the raw logic lives.
+- **ViewModels**: Consumes the services and exposes state (isRecording, duration, etc.) to the UI.
+- **Views**: Pure UI components that react to ViewModel changes.
+
+## ✨ Features
+
+- [x] **Record Audio**: Start, stop, and pause recordings with real-time amplitude monitoring.
+- [ ] **Low-latency Playback**: Using SoLoud for snappy audio response.
+- [x] **Permission Handling**: Clean flow for microphone access.
+- [x] **Reactive UI**: Automatic UI updates as audio state changes.
+
+## 🏁 Getting Started
 
 ### Prerequisites
 
-- Flutter SDK
-- Dart SDK
+- Flutter SDK (Latest stable version)
+- A physical device (Microphone features are often limited on emulators/simulators)
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/stacked_recorder.git
+   git clone https://github.com/your-username/stacked_recorder_flutter.git
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd stacked_recorder
-   ```
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    flutter pub get
    ```
-4. Generate code using build_runner:
+3. Generate the Stacked code:
    ```bash
    flutter pub run build_runner build --delete-conflicting-outputs
    ```
-5. Run the app:
+4. Run the app:
    ```bash
    flutter run
    ```
 
-## Tech Stack 🛠️
+## 🤝 Contributing
 
-- **Architecture**: [Stacked](https://pub.dev/packages/stacked)
-- **Audio**: [audio_waveforms](https://pub.dev/packages/audio_waveforms)
-- **Fonts**: [google_fonts](https://pub.dev/packages/google_fonts) (Nunito, Outfit)
-- **Animations**: [flutter_animate](https://pub.dev/packages/flutter_animate)
-- **State Management**: Stacked ViewModels
-
-## Folder Structure 📂
-
-```
-lib/
-├── app/                  # App configuration (Locator, Router)
-├── features/
-│   └── record/           # Recording Feature
-│       ├── services/     # Audio services
-│       ├── viewmodels/   # Business logic
-│       ├── views/        # UI layer
-│       └── widgets/      # Feature-specific widgets
-└── main.dart             # Entry point
-```
-
-## Contributing 🤝
-
-Feel free to fork this project and add more "magic" to the Audio Garden!
-# stacked_recorder_flutter
+Feel free to open issues or submit pull requests to improve the audio handling implementation!
