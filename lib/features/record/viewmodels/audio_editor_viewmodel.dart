@@ -36,7 +36,10 @@ class AudioEditorViewModel extends BaseViewModel {
       _isPlaying = false;
     } else {
       try {
-        await _playerService.play(_audioFilePath!);
+        await _playerService.play(
+          _audioFilePath!,
+          sampleRateRatio: _effectsService.currentPitch,
+        );
         _isPlaying = true;
 
         _playerService.playerController.onCompletion.listen((_) {

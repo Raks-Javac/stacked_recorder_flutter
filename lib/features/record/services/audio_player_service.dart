@@ -20,7 +20,7 @@ class AudioPlayerService {
     _isInitialized = true;
   }
 
-  Future<void> play(String path) async {
+  Future<void> play(String path, {double sampleRateRatio = 1.0}) async {
     // Check if file exists
     if (!await File(path).exists()) {
       throw Exception('Audio file not found at: $path');
@@ -32,17 +32,22 @@ class AudioPlayerService {
     await stop();
 
     try {
-      debugPrint('Playing audio at path: $path');
+      debugPrint('Playing audio at path: $path with ratio: $sampleRateRatio');
 
       // Read the audio file
       final file = File(path);
       final bytes = await file.readAsBytes();
+
+      // Calculate new sample rate based on ratio
+      // Base sample rate is 24000 as defined in AudioRecorderService
+      final int newSampleRate = (24000 * sampleRateRatio).round();
 
       // Create a buffer stream for SoLoud
       _currentStream = SoLoud.instance.setBufferStream(
         bufferingType: BufferingType.released,
         bufferingTimeNeeds: 0,
         format: BufferType.s16le,
+        sampleRate: newSampleRate,
       );
 
       // Play the stream
