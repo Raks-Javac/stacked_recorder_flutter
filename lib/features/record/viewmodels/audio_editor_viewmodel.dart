@@ -130,6 +130,10 @@ class AudioEditorViewModel extends BaseViewModel {
     if (_isPlaying) {
       _playerService.stop();
     }
+
+    _playerService.dispose();
+    playerController.dispose();
+
     super.dispose();
   }
 }
